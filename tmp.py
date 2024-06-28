@@ -1,22 +1,19 @@
-def decoder_inference(sentence):
-    sentence = preprocess(sentence)
-    sentence = tf.expand_dims(SOS + tokenizer.encode(sentence) + EOS, axis=0)
-    output_sequence = tf.expand_dims(SOS, 0)
-    for i in range(MAX_LENGTH):
-        predictions = model(inputs=[sentence, output_sequence], training=False)
-        predictions = predictions[:, -1:, :]
-        predicted_id = tf.cast(tf.argmax(predictions, axis=-1), tf.int32)
-
-        if tf.equal(predicted_id, EOS[0]):
-            break
-        output_sequence = tf.concat([output_sequence, predicted_id], axis=-1)
-    return tf.squeeze(output_sequence, axis=0)
-
-
-def sentence_generation(sentence):
-    prediction = decoder_inference(sentence)
-    predicted_sentence = tokenizer.decode(
-        [i for i in prediction if i < tokenizer.vocab_size]
-    )
-    print(f"🧑 : {sentence}")
-    print(f"🤖 : {predicted_sentence}")
+a = """
+1 : 요즘 볼만한 애니가 없어
+2 : 다 큰 어른이 무슨 애니를 보니
+1 : 그런가 애니 말고 이제 영화나 볼까?
+2 : 그래 애니 말고 영화나 봐ㅎ
+1 : 알겠어 영화관 가서 영화 봐야겠다
+2 : 근데 생각해 보니까 친구가 귀멸의 칼날 재밌다고 그러던데 그거 봐 봐
+1 : 보다 말았어 재미는 있더라
+2 : 아 그래? 이미 봄? 재밌어?
+1 : 응 재밌는데 그 당시 내 자신이 귀찮았달까?
+2 : 그래? 무슨 내용이야 설명해 줘
+1 : 일본 옛날 배경인데 괴물들이 나오는 내용이야
+2 : 그 뭐지 진격의 거인 같은 건가?
+1 : 아니 그거랑은 좀 다른데 좀비? 이런 거야
+2 : 아 그래? 별로 내 스타일은 아니다
+1 : 그래 그러면 보지 마 ㅎ
+2 : 응 안 볼래ㅎ
+"""
+print(len(a))
